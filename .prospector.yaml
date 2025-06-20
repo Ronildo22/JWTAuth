@@ -21,6 +21,7 @@ pylint:
   disable:
     - unnecessary-ellipsis
     - unnecessary-pass
+    - missing-module-docstring
 
 pep8:
   full: true
