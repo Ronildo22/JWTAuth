@@ -68,7 +68,7 @@ def refresh():
     except InputDataError as e:
         http_response_dto = HttpResponseDTO(
             status_code=400, body={"error": e.error, "message": e.message}
-    )
+        )
 
     except JWTInvalidTokenError as e:
         http_response_dto = HttpResponseDTO(
