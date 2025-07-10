@@ -9,7 +9,7 @@ from src.exceptions.input_data_error import InputDataError
 from src.http_dto.http_request import HttpRequestDTO
 
 
-def refresh_token_service(http_request_dto: HttpRequestDTO):
+def refresh_token(http_request_dto: HttpRequestDTO):
 
     try:
 

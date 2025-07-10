@@ -2,9 +2,8 @@ from flask import Blueprint, jsonify, request
 
 from src.auth.service.exceptions.jwt_exceptions import (
     JWTExpiredSignatureError, JWTInvalidTokenError)
-from src.auth.service.jwt import verify_jwt_token
-from src.auth.use_case.login import login_service
-from src.auth.use_case.refresh import refresh_token_service
+from src.auth.use_case.login import login
+from src.auth.use_case.refresh import refresh_token
 from src.exceptions.input_data_error import InputDataError
 from src.http_dto.http_request import HttpRequestDTO
 from src.http_dto.http_response import HttpResponseDTO
@@ -13,7 +12,7 @@ bp_auth = Blueprint("bp_jwt_auth", __name__)
 
 
 @bp_auth.post("/auth/login")
-def login():
+def login_route():
 
     try:
 
@@ -24,7 +23,7 @@ def login():
             body=request.json,
         )
 
-        response = login_service(http_request_dto=http_request_dto)
+        response = login(http_request_dto=http_request_dto)
 
         http_response_dto = HttpResponseDTO(
             status_code=response["status_code"], body=response["body"]
@@ -48,7 +47,7 @@ def login():
 
 
 @bp_auth.post("/auth/refresh")
-def refresh():
+def refresh_route():
 
     try:
 
@@ -59,7 +58,7 @@ def refresh():
             body=request.json,
         )
 
-        response = refresh_token_service(http_request_dto=http_request_dto)
+        response = refresh_token(http_request_dto=http_request_dto)
 
         http_response_dto = HttpResponseDTO(
             status_code=response["status_code"], body=response["body"]
@@ -94,4 +93,4 @@ def refresh():
 
 
 @bp_auth.post("/auth/logout")
-def logout(): ...
+def logout_route(): ...

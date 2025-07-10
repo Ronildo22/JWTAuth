@@ -6,7 +6,7 @@ from src.exceptions.input_data_error import InputDataError
 from src.http_dto.http_request import HttpRequestDTO
 
 
-def login_service(http_request_dto: HttpRequestDTO):
+def login(http_request_dto: HttpRequestDTO):
 
     try:
 
