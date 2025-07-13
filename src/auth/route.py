@@ -8,7 +8,7 @@ from src.exceptions.input_data_error import InputDataError
 from src.http_dto.http_request import HttpRequestDTO
 from src.http_dto.http_response import HttpResponseDTO
 
-bp_auth = Blueprint("bp_jwt_auth", __name__)
+bp_auth = Blueprint("bp_auth", __name__)
 
 
 @bp_auth.post("/auth/login")
