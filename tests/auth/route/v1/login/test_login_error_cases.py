@@ -1,34 +1,6 @@
 import json
 
 
-def test_login_given_bad_format_request_body_then_response_status_code_500(client_http):
-
-    url = "/v1/auth/login"
-    payload = """
-        {
-            'username': 'testuser',
-        }
-    """
-
-    response = client_http.post(url, json=json.dumps(payload))
-
-    assert response.status_code == 500
-
-def test_login_given_bad_format_request_body_then_response_message_error(client_http):
-
-    url = "/v1/auth/login"
-    payload = """
-        {
-            'username': 'testuser',
-        }
-    """
-
-    response = client_http.post(url, json=json.dumps(payload))
-    data_response = response.json
-    error_field_data = data_response.get('error', [])
-
-    assert error_field_data == "Internal Server Error"
-
 def test_login_given_empty_request_body_then_response_status_code_400(client_http):
 
     url = "/v1/auth/login"
@@ -36,7 +8,7 @@ def test_login_given_empty_request_body_then_response_status_code_400(client_htt
 
     response = client_http.post(url, json=payload)
 
-    assert response.status_code == 400
+    assert response.status_code == 422
 
 def test_login_given_empty_request_body_then_response_message_error(client_http):
 

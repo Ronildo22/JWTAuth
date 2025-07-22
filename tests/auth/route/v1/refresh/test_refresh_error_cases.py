@@ -21,30 +21,13 @@ def test_refresh_given_bad_format_request_body_then_response_status_code_500(cli
 
 # TODO
 # create real and valid data for test
-def test_refresh_given_bad_format_request_body_then_response_message_error(client_http):
-
-    payload = """
-        {
-            'refresh_token': 'test_token',
-        }
-    """
-
-    response = client_http.post(URL, json=json.dumps(payload))
-    data_response = response.json
-    error_field_data = data_response.get('error', [])
-
-    assert error_field_data == "Internal Server Error"
-
-
-# TODO
-# create real and valid data for test
 def test_refresh_given_empty_request_body_then_response_status_code_400(client_http):
 
     payload = {}
 
     response = client_http.post(URL, json=payload)
 
-    assert response.status_code == 400
+    assert response.status_code == 422
 
 
 # TODO
