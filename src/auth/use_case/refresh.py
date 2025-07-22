@@ -3,7 +3,7 @@ from pydantic import ValidationError
 
 from src.auth.service.exceptions.jwt_exceptions import (
     JWTExpiredSignatureError, JWTInvalidTokenError)
-from src.auth.service.jwt import create_access_token, verify_jwt_token
+from src.auth.service.jwt import create_access_token, decode_token
 from src.auth.use_case.dto.refresh_input import RefreshInputDTO
 from src.exceptions.input_data_error import InputDataError
 from src.http_dto.http_request import HttpRequestDTO
@@ -16,7 +16,7 @@ def refresh_token(http_request_dto: HttpRequestDTO):
         # Validate the input data
         refresh_data = RefreshInputDTO(**http_request_dto.body)
 
-        payload = verify_jwt_token(refresh_data.refresh_token)
+        payload = decode_token(refresh_data.refresh_token)
 
         data = payload["sub"]
 
@@ -34,9 +34,3 @@ def refresh_token(http_request_dto: HttpRequestDTO):
 
     except ValidationError as e:
         raise InputDataError(error=e)
-
-    except jwt.ExpiredSignatureError:
-        raise JWTExpiredSignatureError(message="Token has expired")
-
-    except jwt.InvalidTokenError:
-        raise JWTInvalidTokenError(message="Invalid JWT token")
