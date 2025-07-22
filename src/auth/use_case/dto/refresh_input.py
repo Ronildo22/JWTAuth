@@ -5,7 +5,7 @@ class RefreshInputDTO(BaseModel):
     refresh_token: str
 
     @field_validator("refresh_token", check_fields=False)
-    def username_is_null(cls, value):
-        if not value.strip():
+    def username_is_null(cls, value: str):
+        if not value:
             raise ValueError("refresh_token cannot be empty")
         return value
