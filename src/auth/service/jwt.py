@@ -35,7 +35,7 @@ def create_refresh_token(data: str) -> str:
     return token
 
 
-def verify_jwt_token(token: str) -> dict:
+def decode_token(token: str) -> dict:
 
     try:
 
@@ -48,3 +48,15 @@ def verify_jwt_token(token: str) -> dict:
 
     except jwt.InvalidTokenError:
         raise JWTInvalidTokenError(message="Invalid JWT token")
+
+
+def token_is_valid(token: str) -> bool:
+
+    try:
+
+        payload = jwt.decode(token, SECRET_KEY_JWT, algorithms=[ALGORITHM])
+
+        return True
+
+    except jwt.InvalidTokenError:
+        return False
