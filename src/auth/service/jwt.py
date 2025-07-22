@@ -48,15 +48,3 @@ def decode_token(token: str) -> dict:
 
     except jwt.InvalidTokenError:
         raise JWTInvalidTokenError(message="Invalid JWT token")
-
-
-def token_is_valid(token: str) -> bool:
-
-    try:
-
-        payload = jwt.decode(token, SECRET_KEY_JWT, algorithms=[ALGORITHM])
-
-        return True
-
-    except jwt.InvalidTokenError:
-        return False
