@@ -1,6 +1,8 @@
 from src.auth.service.jwt import create_refresh_token
-
-URL = "/v1/auth/refresh"
+from src.auth.service.exceptions.jwt_exceptions import (
+    JWTExpiredSignatureError, JWTInvalidTokenError)
+from src.auth.service.jwt import decode_token
+from tests.auth.route.v1.refresh.utils_url_route import URL
 
 
 # TODO
@@ -23,7 +25,7 @@ def test_refresh_given_valid_request_body_and_refresh_token_is_jwt_valid_then_re
 def test_refresh_given_valid_request_body_then_response_access_token_is_jwt_real(
     client_http,
 ):
-
+    response_test = None
     refresh_token = create_refresh_token(data="testuser")
     payload = {"refresh_token": refresh_token}
 
@@ -31,10 +33,14 @@ def test_refresh_given_valid_request_body_then_response_access_token_is_jwt_real
     data_response = response.json
     access_token = data_response.get("access_token", "")
 
-    # verify_jwt_token(access_token)
+    try:
+        decode_token(access_token)
+        response_test = True
+    
+    except (JWTExpiredSignatureError, JWTInvalidTokenError):
+        response_test = False
 
-    # ASSERT INCORRECT
-    assert isinstance(access_token, str)
+    assert response_test == True
 
 
 # TODO
