@@ -1,8 +1,7 @@
-from flask_limiter.errors import RateLimitExceeded
 from flask import Blueprint, jsonify
+from flask_limiter.errors import RateLimitExceeded
 
-
-bp_erro_handler = Blueprint("erro_handler", __name__)
+bp_erro_handler = Blueprint('erro_handler', __name__)
 
 
 @bp_erro_handler.errorhandler(RateLimitExceeded)

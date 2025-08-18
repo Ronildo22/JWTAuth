@@ -7,9 +7,7 @@ from src.http_dto.http_request import HttpRequestDTO
 
 
 def login(http_request_dto: HttpRequestDTO):
-
     try:
-
         # Validate the input data
         login_data = LoginInputDTO(**http_request_dto.body)
 
@@ -17,12 +15,12 @@ def login(http_request_dto: HttpRequestDTO):
         token_refresh_token = create_refresh_token(data=login_data.username)
 
         return {
-            "status_code": 201,
-            "body": {
-                "access_token": token_access_token,
-                "refresh_token": token_refresh_token,
-                "token_type": "Bearer",
-                "message": "Login successful",
+            'status_code': 201,
+            'body': {
+                'access_token': token_access_token,
+                'refresh_token': token_refresh_token,
+                'token_type': 'Bearer',
+                'message': 'Login successful',
             },
         }
 

@@ -1,22 +1,22 @@
 from flask import Blueprint, jsonify, request
+from werkzeug.exceptions import BadRequest
 
 from src.auth.service.exceptions.jwt_exceptions import (
-    JWTExpiredSignatureError, JWTInvalidTokenError)
+    JWTExpiredSignatureError,
+    JWTInvalidTokenError,
+)
 from src.auth.use_case.login import login
 from src.auth.use_case.refresh import refresh_token
 from src.exceptions.input_data_error import InputDataError
 from src.http_dto.http_request import HttpRequestDTO
 from src.http_dto.http_response import HttpResponseDTO
-from werkzeug.exceptions import BadRequest
 
-bp_auth = Blueprint("bp_auth", __name__)
+bp_auth = Blueprint('bp_auth', __name__)
 
 
-@bp_auth.post("/auth/login")
+@bp_auth.post('/auth/login')
 def login_route():
-
     try:
-        
         http_request_dto = HttpRequestDTO(
             method=request.method,
             url=request.url,
@@ -27,36 +27,34 @@ def login_route():
         response = login(http_request_dto=http_request_dto)
 
         http_response_dto = HttpResponseDTO(
-            status_code=response["status_code"], body=response["body"]
+            status_code=response['status_code'], body=response['body']
         )
 
-    except BadRequest as e:
+    except BadRequest:
         http_response_dto = HttpResponseDTO(
-            status_code=400, body={"message": "Bad Request"}
+            status_code=400, body={'message': 'Bad Request'}
         )
 
     except InputDataError as e:
         http_response_dto = HttpResponseDTO(
-            status_code=422, body={"error": e.error, "message": e.message}
+            status_code=422, body={'error': e.error, 'message': e.message}
         )
 
-    except Exception as e:
+    except Exception:
         http_response_dto = HttpResponseDTO(
-            status_code=500, body={"message": "Internal Server Error"}
+            status_code=500, body={'message': 'Internal Server Error'}
         )
 
     return (
-        jsonify(http_response_dto.to_dict()["body"]),
+        jsonify(http_response_dto.to_dict()['body']),
         http_response_dto.status_code,
         http_response_dto.headers,
     )
 
 
-@bp_auth.post("/auth/refresh")
+@bp_auth.post('/auth/refresh')
 def refresh_route():
-
     try:
-
         http_request_dto = HttpRequestDTO(
             method=request.method,
             url=request.url,
@@ -67,41 +65,40 @@ def refresh_route():
         response = refresh_token(http_request_dto=http_request_dto)
 
         http_response_dto = HttpResponseDTO(
-            status_code=response["status_code"], body=response["body"]
+            status_code=response['status_code'], body=response['body']
         )
 
-    except BadRequest as e:
+    except BadRequest:
         http_response_dto = HttpResponseDTO(
-            status_code=400, body={"message": "Bad Request"}
+            status_code=400, body={'message': 'Bad Request'}
         )
 
     except InputDataError as e:
         http_response_dto = HttpResponseDTO(
-            status_code=422, body={"error": e.error, "message": e.message}
+            status_code=422, body={'error': e.error, 'message': e.message}
         )
 
     except JWTInvalidTokenError as e:
         http_response_dto = HttpResponseDTO(
-            status_code=401, body={"message": e.message}
+            status_code=401, body={'message': e.message}
         )
 
     except JWTExpiredSignatureError as e:
-
         http_response_dto = HttpResponseDTO(
-            status_code=401, body={"message": e.message}
+            status_code=401, body={'message': e.message}
         )
 
     except Exception:
         http_response_dto = HttpResponseDTO(
-            status_code=500, body={"message": "Internal Server Error"}
+            status_code=500, body={'message': 'Internal Server Error'}
         )
 
     return (
-        jsonify(http_response_dto.to_dict()["body"]),
+        jsonify(http_response_dto.to_dict()['body']),
         http_response_dto.status_code,
         http_response_dto.headers,
     )
 
 
-@bp_auth.post("/auth/logout")
+@bp_auth.post('/auth/logout')
 def logout_route(): ...
