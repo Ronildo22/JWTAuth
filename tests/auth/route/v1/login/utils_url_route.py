@@ -1,1 +1,1 @@
-URL = "/v1/auth/login"
+URL = '/v1/auth/login'
